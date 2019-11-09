@@ -1,7 +1,7 @@
 {
-  "name": "react-progressive-image",
-  "version": "0.6.0",
-  "description": "Progressive image loading for React",
+  "name": "react-progressive-graceful-image",
+  "version": "0.6.1",
+  "description": "Graceful Progressive image loading for React",
   "main": "dist.js",
   "typings": "src/index.d.ts",
   "scripts": {
@@ -21,8 +21,8 @@
     "images",
     "loading"
   ],
-  "repository": "https://github.com/FormidableLabs/react-progressive-image.git",
-  "author": "Brandon Dail <brandon.dail@formidable.com>",
+  "repository": "https://github.com/sanishkr/react-progressive-graceful-image.git",
+  "author": "Sanish <sanishkr@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.0.0",
@@ -64,5 +64,7 @@
     "react-dom": "^15.0.0-0 || ^16.0.0-0"
   },
   "sideEffects": false,
-  "dependencies": {}
+  "dependencies": {
+    "lodash.throttle": "^4.1.1"
+  }
 }
