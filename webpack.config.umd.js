@@ -8,7 +8,7 @@ module.exports = {
   entry: path.join(__dirname, 'src/index.js'),
   externals: [
     {
-      'react': {
+      react: {
         root: 'React',
         commonjs2: 'react',
         commonjs: 'react',
@@ -23,25 +23,28 @@ module.exports = {
     }
   ],
   output: {
-    library: 'ReactProgressiveImage',
+    library: 'ReactProgressiveGracefulImage',
     libraryTarget: 'umd',
-    filename: 'react-progressive-image.min.js',
+    filename: 'react-progressive-graceful-image.min.js',
     path: path.join(__dirname, 'umd')
   },
   module: {
-    rules: [{
-      test: /\.js$/,
-      exclude: /node_modules/,
-      loader: 'babel-loader'
-    }]
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader'
+      }
+    ]
   },
   optimization: {
     minimizer: [
       new UglifyJsPlugin({
         uglifyOptions: {
-        warnings: false
-      }})
-    ]   
+          warnings: false
+        }
+      })
+    ]
   },
   plugins: [
     new webpack.DefinePlugin({
