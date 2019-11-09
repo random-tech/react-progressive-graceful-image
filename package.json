@@ -10,7 +10,7 @@
     "lint": "eslint {__tests__,src}/*.js",
     "flow": "flow",
     "test:only": "jest",
-    "test": "npm run lint && npm run flow && npm run test:only",
+    "test": "npm run lint && npm run test:only",
     "prepublish": "npm run pretty && npm run test && npm run build && npm run umd",
     "demo": "webpack-dev-server --inline --hot --config demo/webpack.config.js --content-base demo/",
     "pretty": "prettier --write '{__tests__,src}/*.js'"
@@ -60,6 +60,7 @@
     "webpack-dev-server": "^3.1.8"
   },
   "peerDependencies": {
+    "lodash.throttle": "^4.1.1",
     "react": "^15.0.0-0 || ^16.0.0-0",
     "react-dom": "^15.0.0-0 || ^16.0.0-0"
   },
