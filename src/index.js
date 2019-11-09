@@ -1,6 +1,7 @@
 // @flow
 
 import * as React from 'react';
+import throttle from 'lodash.throttle';
 
 type SrcSetData = {
   srcSet: string,
@@ -13,20 +14,32 @@ type Props = {
   onError?: (errorEvent: Event) => void,
   placeholder: string,
   src: string,
-  srcSetData?: SrcSetData
+  srcSetData?: SrcSetData,
+  noRetry?: boolean,
+  retry?: Object,
+  noLazyLoad?: boolean
 };
 
 type State = {
   image: string,
   loading: boolean,
-  srcSetData: SrcSetData
+  srcSetData: SrcSetData,
+  retryDelay: number,
+  retryCount: number
 };
 
 export default class ProgressiveImage extends React.Component<Props, State> {
   image: HTMLImageElement;
   constructor(props: Props) {
     super(props);
+
+    // store a reference to the throttled function
+    // this.throttledFunction = throttle(this.lazyLoad, 150);
+    this._isMounted = false;
+
     this.state = {
+      retryDelay: this.props.retry.delay,
+      retryCount: 1,
       image: props.placeholder,
       loading: true,
       srcSetData: { srcSet: '', sizes: '' }
@@ -35,6 +48,7 @@ export default class ProgressiveImage extends React.Component<Props, State> {
 
   componentDidMount() {
     const { src, srcSetData } = this.props;
+    this._isMounted = true;
     this.loadImage(src, srcSetData);
   }
 
@@ -49,6 +63,8 @@ export default class ProgressiveImage extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
+    this._isMounted = false;
+
     if (this.image) {
       this.image.onload = null;
       this.image.onerror = null;
@@ -66,7 +82,10 @@ export default class ProgressiveImage extends React.Component<Props, State> {
     const image = new Image();
     this.image = image;
     image.onload = this.onLoad;
-    image.onerror = this.onError;
+    image.onerror = () => {
+      this.onError;
+      this.handleImageRetries(image);
+    };
     image.src = src;
     if (srcSetData) {
       image.srcset = srcSetData.srcSet;
@@ -94,14 +113,16 @@ export default class ProgressiveImage extends React.Component<Props, State> {
   };
 
   setImage = () => {
-    this.setState({
-      image: this.image.src,
-      loading: false,
-      srcSetData: {
-        srcSet: this.image.srcset || '',
-        sizes: this.image.sizes || ''
-      }
-    });
+    if (this._isMounted) {
+      this.setState({
+        image: this.image.src,
+        loading: false,
+        srcSetData: {
+          srcSet: this.image.srcset || '',
+          sizes: this.image.sizes || ''
+        }
+      });
+    }
   };
 
   onError = (errorEvent: Event) => {
@@ -111,10 +132,66 @@ export default class ProgressiveImage extends React.Component<Props, State> {
     }
   };
 
+  /*
+    Handles the actual re-attempts of loading the image
+    following the default / provided retry algorithm
+  */
+  handleImageRetries(image) {
+    // if we are not mounted anymore, we do not care, and we can bail
+    if (!this._isMounted) {
+      return;
+    }
+
+    this.setState({ loading: true }, () => {
+      if (this.state.retryCount <= this.props.retry.count) {
+        this.timeout = setTimeout(() => {
+          // if we are not mounted anymore, we do not care, and we can bail
+          if (!this._isMounted) {
+            return;
+          }
+
+          // re-attempt fetching the image
+          image.src = this.props.src;
+          if (this.props.srcSetData) {
+            image.srcset = this.props.srcSetData.srcSet;
+            image.sizes = this.props.srcSetData.sizes;
+          }
+          // update count and delay
+          this.setState(prevState => {
+            let updateDelay;
+            if (this.props.retry.accumulate === 'multiply') {
+              updateDelay = prevState.retryDelay * this.props.retry.delay;
+            } else if (this.props.retry.accumulate === 'add') {
+              updateDelay = prevState.retryDelay + this.props.retry.delay;
+            } else if (this.props.retry.accumulate === 'noop') {
+              updateDelay = this.props.retry.delay;
+            } else {
+              updateDelay = 'multiply';
+            }
+
+            return {
+              retryDelay: updateDelay,
+              retryCount: prevState.retryCount + 1
+            };
+          });
+        }, this.state.retryDelay * 1000);
+      }
+    });
+  }
+
   render() {
     const { image, loading, srcSetData } = this.state;
-    const { children } = this.props;
-
+    const { children, noRetry, retry, noLazyLoad } = this.props;
+    console.log({ noRetry, retry, noLazyLoad });
+    if (noLazyLoad === undefined) {
+      // noLazyLoad = false;
+    }
+    if (noRetry === undefined) {
+      // noRetry = false;
+    }
+    if (noRetry) {
+      retry = { count: 8, delay: 2, accumulate: 'multiply' };
+    }
     if (!children || typeof children !== 'function') {
       throw new Error(`ProgressiveImage requires a function as its only child`);
     }
