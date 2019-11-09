@@ -182,7 +182,7 @@ export default class ProgressiveImage extends React.Component<Props, State> {
   render() {
     const { image, loading, srcSetData } = this.state;
     const { children, noRetry, retry, noLazyLoad } = this.props;
-    console.log({ noRetry, retry, noLazyLoad });
+    // console.log({ noRetry, retry, noLazyLoad });
     if (noLazyLoad === undefined) {
       // noLazyLoad = false;
     }
