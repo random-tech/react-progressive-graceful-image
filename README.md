@@ -2,21 +2,21 @@
 
 [![Maintenance Status][maintenance-image]](#maintenance-status)
 
-[`react-progressive-image`](https://www.npmjs.com/package/react-progressive-image) React component for progressive image loading
+[`react-progressive-graceful-image`](https://www.npmjs.com/package/react-progressive-graceful-image) React component for progressive image loading
 
 ### Install
 
 ```bash
-$ yarn add react-progressive-image
+$ yarn add react-progressive-graceful-image
 ```
 
 The UMD build is also available on [unpkg](https://unpkg.com):
 
 ```html
-<script src="https://unpkg.com/react-progressive-image@0.1.0/umd/react-progressive-image.min.js"></script>
+<script src="https://unpkg.com/react-progressive-graceful-image@0.1.0/umd/react-progressive-graceful-image.min.js"></script>
 ```
 
-If you use the UMD build you can find the library on `window.ReactProgressiveImage`.
+If you use the UMD build you can find the library on `window.ReactProgressiveGracefulImage`.
 
 ### Examples
 
@@ -122,6 +122,11 @@ You can do this by adding the fallback image inside of a `<noscript>` tag in the
 | placeholder | `string`                               | `true`   | the src of the placeholder image                |
 | src         | `string`                               | `true`   | the src of the main image                       |
 | srcSetData  | `{srcSet: "string", sizes: "string" }` | `false`  | srcset and sizes to be applied to the image     |
+| noRetry     | `boolean`                              | `false`  | flag to see if retry is required                |
+| retry       | `Object`                               | `true`   | {count: 8, delay: 2, accumulate: 'multiply'}    |
+| noLazyLoad  | `boolean`                              | `false`  | flag to see if lazy loading is required         |
+
+Note: See https://github.com/linasmnew/react-graceful-image for usage of props : retry, noRetry, noLazyLoad
 
 ## Maintenance Status
 
