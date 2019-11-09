@@ -60,6 +60,7 @@ class App extends React.Component {
             srcSet: `${SM} 320w, ${MD} 700w, ${LG} 2000w`,
             sizes: '(max-width: 2000px) 100vw, 2000px'
           }}
+          retry={{ count: 8, delay: 2, accumulate: 'multiply' }}
         >
           {(image, loading, srcSetData) => {
             return (
