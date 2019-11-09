@@ -1,4 +1,4 @@
-declare module 'react-progressive-image' {
+declare module 'react-progressive-graceful-image' {
   export interface ProgressiveImageProps {
     delay?: number;
     onError?: (errorEvent: Event) => void;
@@ -8,6 +8,9 @@ declare module 'react-progressive-image' {
       srcSet: string;
       sizes: string;
     };
+    noRetry?: boolean,
+    retry?: Object;
+    noLazyLoad?: boolean;
   }
 
   export interface ProgressiveImageState {
@@ -17,6 +20,8 @@ declare module 'react-progressive-image' {
       srcSet: string;
       sizes: string;
     };
+    retryDelay: number;
+    retryCount: number;  
   }
 
   export default class ProgressiveImage extends React.Component<
