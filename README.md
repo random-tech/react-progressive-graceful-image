@@ -1,4 +1,8 @@
-# React Progressive Image
+# React Progressive Graceful Image
+
+**Note**: This is a forked repo from https://github.com/FormidableLabs/react-progressive-image. So, all usage are similar to that. I am adding two new feature for graceful loading [Done] and lazy loading [WIP] from https://github.com/linasmnew/react-graceful-image. So, please check usage of 3 newly introduced props (retry, noRetry, noLazyLoad) from this repo.
+
+***
 
 [![Maintenance Status][maintenance-image]](#maintenance-status)
 
@@ -7,7 +11,7 @@
 ### Install
 
 ```bash
-$ yarn add react-progressive-graceful-image
+$ npm i react-progressive-graceful-image
 ```
 
 The UMD build is also available on [unpkg](https://unpkg.com):
@@ -60,6 +64,7 @@ If you use the UMD build you can find the library on `window.ReactProgressiveGra
     sizes: '(max-width: 2000px) 100vw, 2000px'
   }}
   placeholder="tiny-image.jpg"
+  retry={{ count: 8, delay: 2, accumulate: 'multiply' }}
 >
   {(src, _loading, srcSetData) => (
     <img
