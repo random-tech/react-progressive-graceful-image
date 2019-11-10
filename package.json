@@ -11,7 +11,7 @@
     "flow": "flow",
     "test:only": "jest",
     "test": "npm run lint && npm run test:only",
-    "prepublish": "npm run pretty && npm run test && npm run build && npm run umd",
+    "prepublish": "npm run pretty && npm run test && npm run build",
     "demo": "webpack-dev-server --inline --hot --config demo/webpack.config.js --content-base demo/",
     "pretty": "prettier --write '{__tests__,src}/*.js'"
   },
@@ -67,6 +67,5 @@
   "sideEffects": false,
   "dependencies": {
     "lodash.throttle": "^4.1.1"
-  },
-  "publishConfig": { "registry": "https://npm.pkg.github.com/" }
+  }
 }
