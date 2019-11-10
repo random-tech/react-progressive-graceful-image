@@ -14,20 +14,12 @@
 $ npm i react-progressive-graceful-image
 ```
 
-The UMD build is also available on [unpkg](https://unpkg.com):
-
-```html
-<script src="https://unpkg.com/react-progressive-graceful-image@0.1.0/umd/react-progressive-graceful-image.min.js"></script>
-```
-
-If you use the UMD build you can find the library on `window.ReactProgressiveGracefulImage`.
-
 ### Examples
 
 #### Simple
 
 ```jsx
-<ProgressiveImage src="large-image.jpg" placeholder="tiny-image.jpg">
+<ProgressiveImage src="large-image.jpg" placeholder="tiny-image.jpg" retry={{ count: 8, delay: 2, accumulate: 'multiply' }}>
   {src => <img src={src} alt="an image" />}
 </ProgressiveImage>
 ```
@@ -39,6 +31,7 @@ If you use the UMD build you can find the library on `window.ReactProgressiveGra
   delay={3000}
   src="large-image.jpg"
   placeholder="tiny-image.jpg"
+  retry={{ count: 8, delay: 2, accumulate: 'multiply' }}
 >
   {src => <img src={src} alt="an image" />}
 </ProgressiveImage>
@@ -47,7 +40,8 @@ If you use the UMD build you can find the library on `window.ReactProgressiveGra
 #### With loading argument
 
 ```jsx
-<ProgressiveImage src="large-image.jpg" placeholder="tiny-image.jpg">
+<ProgressiveImage src="large-image.jpg" placeholder="tiny-image.jpg"
+  retry={{ count: 8, delay: 2, accumulate: 'multiply' }}>
   {(src, loading) => (
     <img style={{ opacity: loading ? 0.5 : 1 }} src={src} alt="an image" />
   )}
@@ -89,7 +83,7 @@ const placeholder = (
   />
 );
 
-<ProgressiveImage src="large-image.jpg" placeholder="">
+<ProgressiveImage src="large-image.jpg" placeholder="" retry={{ count: 8, delay: 2, accumulate: 'multiply' }}>
   {(src, loading) => {
     return loading ? placeholder : <img src={src} alt="an image" />;
   }}
@@ -103,7 +97,7 @@ Since this component relies on JavaScript to replace the placeholder src with th
 You can do this by adding the fallback image inside of a `<noscript>` tag in the render callback you provide as the `ProgressiveImage` component's child.
 
 ```jsx
-<ProgressiveImage src="large-image.jpg" placeholder="tiny-image.jpg">
+<ProgressiveImage src="large-image.jpg" placeholder="tiny-image.jpg" retry={{ count: 8, delay: 2, accumulate: 'multiply' }}>
   {src => {
     return (
       <div>
