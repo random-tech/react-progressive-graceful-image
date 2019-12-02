@@ -51,8 +51,7 @@ export default class ProgressiveImage extends React.Component<Props, State> {
     super(props);
 
     // store a reference to the throttled function
-    const { src, srcSetData } = this.props;
-    this.throttledFunction = throttle(this.lazyLoad(src, srcSetData), 150);
+    this.throttledFunction = throttle(this.lazyLoad, 150);
     this._isMounted = false;
 
     this.state = {
@@ -71,7 +70,7 @@ export default class ProgressiveImage extends React.Component<Props, State> {
     // if user wants to lazy load
     if (!this.props.noLazyLoad) {
       // check if already within viewport to avoid attaching listeners
-      if (isInViewport(this.placeholderImage)) {
+      if (isInViewport(this.placeholderImage.current)) {
         this.loadImage(src, srcSetData);
       } else {
         registerListener('load', this.throttledFunction);
@@ -101,6 +100,10 @@ export default class ProgressiveImage extends React.Component<Props, State> {
       this.image.onload = null;
       this.image.onerror = null;
     }
+    if (this.timeout) {
+      window.clearTimeout(this.timeout);
+    }
+    this.clearEventListeners();
   }
 
   loadImage = (src: string, srcSetData?: SrcSetData) => {
@@ -215,8 +218,9 @@ export default class ProgressiveImage extends React.Component<Props, State> {
     If placeholder is currently within the viewport then load the actual image
     and remove all event listeners associated with it
   */
-  lazyLoad = (src, srcSetData) => {
-    if (isInViewport(this.placeholderImage)) {
+  lazyLoad = () => {
+    const { src, srcSetData } = this.props;
+    if (isInViewport(this.placeholderImage.current)) {
       this.clearEventListeners();
       this.loadImage(src, srcSetData);
     }
@@ -233,6 +237,8 @@ export default class ProgressiveImage extends React.Component<Props, State> {
   render() {
     const { image, loading, srcSetData } = this.state;
     const { children, noRetry, retry, noLazyLoad } = this.props;
+    const ref = React.createRef();
+    this.placeholderImage = ref;
     // console.log({ noRetry, retry, noLazyLoad });
     if (noLazyLoad === undefined) {
       // noLazyLoad = false;
@@ -247,8 +253,6 @@ export default class ProgressiveImage extends React.Component<Props, State> {
       throw new Error(`ProgressiveImage requires a function as its only child`);
     }
 
-    // TODO: added this ref to image tag - How?
-    // ref={ref => (this.placeholderImage = ref)}
-    return children(image, loading, srcSetData);
+    return children(image, ref, loading, srcSetData);
   }
 }
