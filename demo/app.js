@@ -50,29 +50,37 @@ class App extends React.Component {
           <h1 style={textStyle}>
             React <br />
             Progressive <br />
+            Graceful <br />
             Image
           </h1>
         </div>
-        <ProgressiveImage
-          src={MD}
-          placeholder={inline}
-          srcSetData={{
-            srcSet: `${SM} 320w, ${MD} 700w, ${LG} 2000w`,
-            sizes: '(max-width: 2000px) 100vw, 2000px'
-          }}
-          retry={{ count: 8, delay: 2, accumulate: 'multiply' }}
-        >
-          {(image, loading, srcSetData) => {
-            return (
-              <img
-                style={imageStyle}
-                src={image}
-                srcSet={srcSetData.srcSet}
-                sizes={srcSetData.sizes}
-              />
-            );
-          }}
-        </ProgressiveImage>
+        {[...Array(5)].map((item, i) => (
+          <ProgressiveImage
+            key={i + 1}
+            src={`http://placehold.it/594x1024/${i + 1}d${i}${i + 4}${i +
+              3}a/ffffff/&text=Image${i + 1}`}
+            placeholder={`http://placehold.it/59x102/${i + 1}d${i}${i + 4}${i +
+              3}a/ffffff/&text=Placeholder${i + 1}`}
+            srcSetData={{
+              srcSet: `http://placehold.it/594x1024/${i + 1}d${i}${i + 4}${i +
+                3}a/ffffff/&text=BigImage${i + 1} 2000w`
+            }}
+            retry={{ count: 8, delay: 2, accumulate: 'multiply' }}
+          >
+            {(image, ref, loading, srcSetData) => {
+              return (
+                <img
+                  style={imageStyle}
+                  src={image}
+                  srcSet={srcSetData.srcSet}
+                  // sizes={srcSetData.sizes}
+                  ref={ref}
+                  alt={`Image #${i + 1}`}
+                />
+              );
+            }}
+          </ProgressiveImage>
+        ))}
       </div>
     );
   }
