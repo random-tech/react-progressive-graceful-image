@@ -1,6 +1,6 @@
 # React Progressive Graceful Image
 
-**Note**: This is a forked repo from https://github.com/FormidableLabs/react-progressive-image. So, all usage are similar to that. I am adding two new feature for graceful loading [Done] and lazy loading [WIP] from https://github.com/linasmnew/react-graceful-image. So, please check usage of 3 newly introduced props (retry, noRetry, noLazyLoad) from this repo.
+**Note**: This is a forked repo from https://github.com/FormidableLabs/react-progressive-image. So, all usage are similar to that. I am adding two new features for graceful loading [Done] and lazy loading [done] from https://github.com/linasmnew/react-graceful-image. So, please check usage of 3 newly introduced props (retry, noRetry, noLazyLoad) from this repo.
 
 ***
 
