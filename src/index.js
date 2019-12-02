@@ -28,13 +28,31 @@ type State = {
   retryCount: number
 };
 
+function isInViewport(el) {
+  const rect = el.getBoundingClientRect();
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.left <= (window.innerWidth || document.documentElement.clientWidth)
+  );
+}
+
+function registerListener(event, fn) {
+  if (window.addEventListener) {
+    window.addEventListener(event, fn);
+  } else {
+    window.attachEvent('on' + event, fn);
+  }
+}
 export default class ProgressiveImage extends React.Component<Props, State> {
   image: HTMLImageElement;
   constructor(props: Props) {
     super(props);
 
     // store a reference to the throttled function
-    // this.throttledFunction = throttle(this.lazyLoad, 150);
+    const { src, srcSetData } = this.props;
+    this.throttledFunction = throttle(this.lazyLoad(src, srcSetData), 150);
     this._isMounted = false;
 
     this.state = {
@@ -49,7 +67,21 @@ export default class ProgressiveImage extends React.Component<Props, State> {
   componentDidMount() {
     const { src, srcSetData } = this.props;
     this._isMounted = true;
-    this.loadImage(src, srcSetData);
+
+    // if user wants to lazy load
+    if (!this.props.noLazyLoad) {
+      // check if already within viewport to avoid attaching listeners
+      if (isInViewport(this.placeholderImage)) {
+        this.loadImage(src, srcSetData);
+      } else {
+        registerListener('load', this.throttledFunction);
+        registerListener('scroll', this.throttledFunction);
+        registerListener('resize', this.throttledFunction);
+        registerListener('gestureend', this.throttledFunction); // to detect pinch on mobile devices
+      }
+    } else {
+      this.loadImage(src, srcSetData);
+    }
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -179,6 +211,25 @@ export default class ProgressiveImage extends React.Component<Props, State> {
     });
   }
 
+  /*
+    If placeholder is currently within the viewport then load the actual image
+    and remove all event listeners associated with it
+  */
+  lazyLoad = (src, srcSetData) => {
+    if (isInViewport(this.placeholderImage)) {
+      this.clearEventListeners();
+      this.loadImage(src, srcSetData);
+    }
+  };
+
+  clearEventListeners() {
+    this.throttledFunction.cancel();
+    window.removeEventListener('load', this.throttledFunction);
+    window.removeEventListener('scroll', this.throttledFunction);
+    window.removeEventListener('resize', this.throttledFunction);
+    window.removeEventListener('gestureend', this.throttledFunction);
+  }
+
   render() {
     const { image, loading, srcSetData } = this.state;
     const { children, noRetry, retry, noLazyLoad } = this.props;
@@ -196,6 +247,8 @@ export default class ProgressiveImage extends React.Component<Props, State> {
       throw new Error(`ProgressiveImage requires a function as its only child`);
     }
 
+    // TODO: added this ref to image tag - How?
+    // ref={ref => (this.placeholderImage = ref)}
     return children(image, loading, srcSetData);
   }
 }
