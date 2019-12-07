@@ -1,6 +1,18 @@
 # React Progressive Graceful Image
 
-**Note**: This is a forked repo from https://github.com/FormidableLabs/react-progressive-image. So, all usage are similar to that. I am adding two new features for graceful loading [Done] and lazy loading [done] from https://github.com/linasmnew/react-graceful-image. So, please check usage of 3 newly introduced props (retry, noRetry, noLazyLoad) from this repo.
+**Breaking changes** [0.6.5] : Now, `ref` will be a required 2nd argument of children function to use the lazyLoading feature. Checkout below examples for details.
+
+***
+
+**Note**: This is a forked repo from https://github.com/FormidableLabs/react-progressive-image. So, all usage are similar to that. 
+
+I am adding two new features:
+ - [x] Graceful loading 
+ - [x] Lazy loading
+
+from https://github.com/linasmnew/react-graceful-image. So, please check usage of 3 newly introduced props (retry, noRetry, noLazyLoad) from above repo.
+
+#### [TODO] : Use of Intersection Observer for Lazy Loading (Better Performance)
 
 ***
 
@@ -20,7 +32,7 @@ $ npm i react-progressive-graceful-image
 
 ```jsx
 <ProgressiveImage src="large-image.jpg" placeholder="tiny-image.jpg" retry={{ count: 8, delay: 2, accumulate: 'multiply' }}>
-  {src => <img src={src} alt="an image" />}
+  {(src, ref) => <img ref={ref} src={src} alt="an image" />}
 </ProgressiveImage>
 ```
 
@@ -33,7 +45,7 @@ $ npm i react-progressive-graceful-image
   placeholder="tiny-image.jpg"
   retry={{ count: 8, delay: 2, accumulate: 'multiply' }}
 >
-  {src => <img src={src} alt="an image" />}
+  {(src, ref) => <img ref={ref} src={src} alt="an image" />}
 </ProgressiveImage>
 ```
 
@@ -42,8 +54,8 @@ $ npm i react-progressive-graceful-image
 ```jsx
 <ProgressiveImage src="large-image.jpg" placeholder="tiny-image.jpg"
   retry={{ count: 8, delay: 2, accumulate: 'multiply' }}>
-  {(src, loading) => (
-    <img style={{ opacity: loading ? 0.5 : 1 }} src={src} alt="an image" />
+  {(src, ref, loading) => (
+    <img ref={ref} style={{ opacity: loading ? 0.5 : 1 }} src={src} alt="an image" />
   )}
 </ProgressiveImage>
 ```
@@ -60,9 +72,10 @@ $ npm i react-progressive-graceful-image
   placeholder="tiny-image.jpg"
   retry={{ count: 8, delay: 2, accumulate: 'multiply' }}
 >
-  {(src, _loading, srcSetData) => (
+  {(src, ref, _loading, srcSetData) => (
     <img
       src={src}
+      ref={ref}
       srcSet={srcSetData.srcSet}
       sizes={srcSetData.sizes}
       alt="an image"
@@ -84,8 +97,8 @@ const placeholder = (
 );
 
 <ProgressiveImage src="large-image.jpg" placeholder="" retry={{ count: 8, delay: 2, accumulate: 'multiply' }}>
-  {(src, loading) => {
-    return loading ? placeholder : <img src={src} alt="an image" />;
+  {(src, ref, loading) => {
+    return loading ? placeholder : <img ref={ref} src={src} alt="an image" />;
   }}
 </ProgressiveImage>;
 ```
@@ -98,10 +111,10 @@ You can do this by adding the fallback image inside of a `<noscript>` tag in the
 
 ```jsx
 <ProgressiveImage src="large-image.jpg" placeholder="tiny-image.jpg" retry={{ count: 8, delay: 2, accumulate: 'multiply' }}>
-  {src => {
+  {(src, ref) => {
     return (
       <div>
-        <img className="progressive-image" src={src} />
+        <img ref={ref} className="progressive-image" src={src} />
         <noscript>
           <img className="progressive-image no-script" src="large-image.jpg" />
         </noscript>
@@ -122,10 +135,13 @@ You can do this by adding the fallback image inside of a `<noscript>` tag in the
 | src         | `string`                               | `true`   | the src of the main image                       |
 | srcSetData  | `{srcSet: "string", sizes: "string" }` | `false`  | srcset and sizes to be applied to the image     |
 | noRetry     | `boolean`                              | `false`  | flag to see if retry is required                |
-| retry       | `Object`                               | `true`   | {count: 8, delay: 2, accumulate: 'multiply'}    |
+| retry       | `{count: "number", delay: "number(in seconds)", accumulate: ENUM['add', 'multiply', 'noop']}`                               | `true`   | Strategy for graceful loading    |
 | noLazyLoad  | `boolean`                              | `false`  | flag to see if lazy loading is required         |
 
-Note: See https://github.com/linasmnew/react-graceful-image for usage of props : retry, noRetry, noLazyLoad
+Note: See https://github.com/linasmnew/react-graceful-image for usage of props: 
+ - retry
+ - noRetry
+ - noLazyLoad
 
 ## Maintenance Status
 
