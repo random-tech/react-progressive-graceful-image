@@ -77,6 +77,7 @@ export default class ProgressiveImage extends React.Component<Props, State> {
         registerListener('scroll', this.throttledFunction);
         registerListener('resize', this.throttledFunction);
         registerListener('gestureend', this.throttledFunction); // to detect pinch on mobile devices
+        registerListener('touchend', this.throttledFunction); // to detect end of swipe/touch on devices
       }
     } else {
       this.loadImage(src, srcSetData);
