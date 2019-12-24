@@ -12,7 +12,9 @@ I am adding two new features:
 
 from https://github.com/linasmnew/react-graceful-image. So, please check usage of 3 newly introduced props (retry, noRetry, noLazyLoad) from above repo.
 
-#### [TODO] : Use of Intersection Observer for Lazy Loading (Better Performance)
+#### [TODO] : 
+- [x] Use of Intersection Observer for Lazy Loading (Better Performance)
+- [ ] Use of navigator.onLine in place of current retry strategy (Optimization)
 
 ***
 
