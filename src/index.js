@@ -237,7 +237,7 @@ export default class ProgressiveImage extends React.Component<Props, State> {
   // }
 
   handleIntersection = (event, unobserve) => {
-    console.log(event.isIntersecting, event.intersectionRatio, this.props.src);
+    // console.log(event.isIntersecting, event.intersectionRatio, this.props.src);
     if (event.isIntersecting) {
       const { src, srcSetData } = this.props;
       this.loadImage(src, srcSetData);
