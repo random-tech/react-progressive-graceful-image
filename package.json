@@ -66,6 +66,8 @@
   },
   "sideEffects": false,
   "dependencies": {
+    "@researchgate/react-intersection-observer": "^1.0.5",
+    "intersection-observer": "^0.7.0",
     "lodash.throttle": "^4.1.1"
   }
 }
