@@ -37,8 +37,6 @@ export default class ProgressiveImage extends React.Component<Props, State> {
 
     this.state = {
       isOnline: hasWindow() ? window.navigator.onLine : true,
-      retryDelay: this.props.retry.delay,
-      retryCount: 1,
       image: props.placeholder,
       loading: true,
       srcSetData: { srcSet: '', sizes: '' }
