@@ -1,7 +1,6 @@
 // @flow
 
 import * as React from 'react';
-// import throttle from 'lodash.throttle';
 import 'intersection-observer'; // optional polyfill
 import Observer from '@researchgate/react-intersection-observer';
 
@@ -18,35 +17,15 @@ type Props = {
   src: string,
   srcSetData?: SrcSetData,
   noRetry?: boolean,
-  retry?: Object,
   noLazyLoad?: boolean
 };
 
 type State = {
   image: string,
   loading: boolean,
-  srcSetData: SrcSetData,
-  retryDelay: number,
-  retryCount: number
+  srcSetData: SrcSetData
 };
 
-// function isInViewport(el) {
-//   const rect = el.getBoundingClientRect();
-//   return (
-//     rect.top >= 0 &&
-//     rect.left >= 0 &&
-//     rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
-//     rect.left <= (window.innerWidth || document.documentElement.clientWidth)
-//   );
-// }
-
-// function registerListener(event, fn) {
-//   if (window.addEventListener) {
-//     window.addEventListener(event, fn);
-//   } else {
-//     window.attachEvent('on' + event, fn);
-//   }
-// }
 const hasWindow = () => {
   return typeof window !== 'undefined';
 };
@@ -54,9 +33,6 @@ export default class ProgressiveImage extends React.Component<Props, State> {
   image: HTMLImageElement;
   constructor(props: Props) {
     super(props);
-
-    // store a reference to the throttled function
-    // this.throttledFunction = throttle(this.lazyLoad, 150);
     this._isMounted = false;
 
     this.state = {
@@ -193,73 +169,6 @@ export default class ProgressiveImage extends React.Component<Props, State> {
     }
   };
 
-  /*
-    Handles the actual re-attempts of loading the image
-    following the default / provided retry algorithm
-  */
-  handleImageRetries(image) {
-    // if we are not mounted anymore, we do not care, and we can bail
-    if (!this._isMounted) {
-      return;
-    }
-
-    this.setState({ loading: true }, () => {
-      if (this.state.retryCount <= this.props.retry.count) {
-        this.timeout = setTimeout(() => {
-          // if we are not mounted anymore, we do not care, and we can bail
-          if (!this._isMounted) {
-            return;
-          }
-
-          // re-attempt fetching the image
-          image.src = this.props.src;
-          if (this.props.srcSetData) {
-            image.srcset = this.props.srcSetData.srcSet;
-            image.sizes = this.props.srcSetData.sizes;
-          }
-          // update count and delay
-          this.setState(prevState => {
-            let updateDelay;
-            if (this.props.retry.accumulate === 'multiply') {
-              updateDelay = prevState.retryDelay * this.props.retry.delay;
-            } else if (this.props.retry.accumulate === 'add') {
-              updateDelay = prevState.retryDelay + this.props.retry.delay;
-            } else if (this.props.retry.accumulate === 'noop') {
-              updateDelay = this.props.retry.delay;
-            } else {
-              updateDelay = 'multiply';
-            }
-
-            return {
-              retryDelay: updateDelay,
-              retryCount: prevState.retryCount + 1
-            };
-          });
-        }, this.state.retryDelay * 1000);
-      }
-    });
-  }
-
-  /*
-    If placeholder is currently within the viewport then load the actual image
-    and remove all event listeners associated with it
-  */
-  // lazyLoad = () => {
-  //   const { src, srcSetData } = this.props;
-  //   if (isInViewport(this.placeholderImage.current)) {
-  //     this.clearEventListeners();
-  //     this.loadImage(src, srcSetData);
-  //   }
-  // };
-
-  // clearEventListeners() {
-  //   this.throttledFunction.cancel();
-  //   window.removeEventListener('load', this.throttledFunction);
-  //   window.removeEventListener('scroll', this.throttledFunction);
-  //   window.removeEventListener('resize', this.throttledFunction);
-  //   window.removeEventListener('gestureend', this.throttledFunction);
-  // }
-
   handleIntersection = (event, unobserve, isOnline) => {
     if (event.isIntersecting) {
       const { src, srcSetData } = this.props;
@@ -279,18 +188,12 @@ export default class ProgressiveImage extends React.Component<Props, State> {
       disabled: this.props.noLazyLoad || false
     };
     const { image, loading, srcSetData } = this.state;
-    const { children, noRetry, retry, noLazyLoad } = this.props;
+    const { children, noRetry, noLazyLoad } = this.props;
     const ref = React.createRef();
     this.placeholderImage = ref;
-    // console.log({ noRetry, retry, noLazyLoad });
+    // console.log({ noRetry, noLazyLoad });
     if (noLazyLoad === undefined) {
       // noLazyLoad = false;
-    }
-    if (noRetry === undefined) {
-      // noRetry = false;
-    }
-    if (noRetry) {
-      retry = { count: 8, delay: 2, accumulate: 'multiply' };
     }
     if (!children || typeof children !== 'function') {
       throw new Error(`ProgressiveImage requires a function as its only child`);
