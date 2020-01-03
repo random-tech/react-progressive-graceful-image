@@ -47,6 +47,9 @@ type State = {
 //     window.attachEvent('on' + event, fn);
 //   }
 // }
+const hasWindow = () => {
+  return typeof window !== 'undefined';
+};
 export default class ProgressiveImage extends React.Component<Props, State> {
   image: HTMLImageElement;
   constructor(props: Props) {
@@ -57,6 +60,7 @@ export default class ProgressiveImage extends React.Component<Props, State> {
     this._isMounted = false;
 
     this.state = {
+      isOnline: hasWindow() ? window.navigator.onLine : true,
       retryDelay: this.props.retry.delay,
       retryCount: 1,
       image: props.placeholder,
@@ -65,8 +69,19 @@ export default class ProgressiveImage extends React.Component<Props, State> {
     };
   }
 
+  handleOnlineStatus = () => {
+    this.setState({
+      isOnline: window.navigator.onLine
+    });
+  };
+
   componentDidMount() {
     this._isMounted = true;
+    if (!hasWindow()) {
+      return;
+    }
+    window.addEventListener('online', this.handleOnlineStatus);
+    window.addEventListener('offline', this.handleOnlineStatus);
     // const { src, srcSetData } = this.props;
     // if user wants to lazy load
     // if (!this.props.noLazyLoad) {
@@ -105,7 +120,9 @@ export default class ProgressiveImage extends React.Component<Props, State> {
     if (this.timeout) {
       window.clearTimeout(this.timeout);
     }
-    this.clearEventListeners();
+    window.removeEventListener('online', this.handleOnlineStatus);
+    window.removeEventListener('offline', this.handleOnlineStatus);
+    // this.clearEventListeners();
   }
 
   loadImage = (src: string, srcSetData?: SrcSetData) => {
@@ -121,7 +138,8 @@ export default class ProgressiveImage extends React.Component<Props, State> {
     image.onload = this.onLoad;
     image.onerror = () => {
       this.onError;
-      this.handleImageRetries(image);
+      return;
+      // this.handleImageRetries(image);
     };
     image.src = src;
     if (srcSetData) {
@@ -151,14 +169,20 @@ export default class ProgressiveImage extends React.Component<Props, State> {
 
   setImage = () => {
     if (this._isMounted) {
-      this.setState({
-        image: this.image.src,
-        loading: false,
-        srcSetData: {
-          srcSet: this.image.srcset || '',
-          sizes: this.image.sizes || ''
+      this.setState(
+        {
+          image: this.image.src,
+          loading: false,
+          srcSetData: {
+            srcSet: this.image.srcset || '',
+            sizes: this.image.sizes || ''
+          }
+        },
+        () => {
+          window.removeEventListener('online', this.handleOnlineStatus);
+          window.removeEventListener('offline', this.handleOnlineStatus);
         }
-      });
+      );
     }
   };
 
@@ -236,18 +260,20 @@ export default class ProgressiveImage extends React.Component<Props, State> {
   //   window.removeEventListener('gestureend', this.throttledFunction);
   // }
 
-  handleIntersection = (event, unobserve) => {
-    // console.log(event.isIntersecting, event.intersectionRatio, this.props.src);
+  handleIntersection = (event, unobserve, isOnline) => {
     if (event.isIntersecting) {
       const { src, srcSetData } = this.props;
-      this.loadImage(src, srcSetData);
-      unobserve();
+      if (isOnline) {
+        this.loadImage(src, srcSetData);
+        unobserve();
+      }
     }
   };
 
   render() {
     const options = {
-      onChange: this.handleIntersection,
+      onChange: (event, unobserve) =>
+        this.handleIntersection(event, unobserve, this.state.isOnline),
       rootMargin: '0% 0% 25%',
       threshold: [0],
       disabled: this.props.noLazyLoad || false
