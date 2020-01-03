@@ -1,10 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ProgressiveImage from '../src/index.js';
-import inline from './inline';
-const SM = 'https://farm2.staticflickr.com/1853/42944460370_e749cd18eb_b.jpg';
-const MD = 'https://farm2.staticflickr.com/1867/30884025408_7e6907d2e4_b.jpg';
-const LG = 'https://farm2.staticflickr.com/1875/42944459590_170ddf9fc8_b.jpg';
 
 const centerAlign = {
   alignItems: 'center',
@@ -65,7 +61,6 @@ class App extends React.Component {
               srcSet: `http://placehold.it/594x1024/${i + 1}d${i}${i + 4}${i +
                 3}a/ffffff/&text=BigImage${i + 1} 2000w`
             }}
-            retry={{ count: 8, delay: 2, accumulate: 'multiply' }}
           >
             {(image, ref, loading, srcSetData) => {
               return (
