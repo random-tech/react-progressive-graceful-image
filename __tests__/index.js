@@ -26,7 +26,6 @@ const mountProgressiveImage = (renderFn, delay) => {
       placeholder={placeholder}
       srcSetData={srcSetData}
       noLazyLoad={true}
-      retry={{ count: 8, delay: 2, accumulate: 'multiply' }}
     >
       {render}
     </ProgressiveImage>
@@ -47,9 +46,7 @@ describe('react-progressive-graceful-image', () => {
     try {
       expect(() => {
         mount(
-          <ProgressiveImage
-            retry={{ count: 8, delay: 2, accumulate: 'multiply' }}
-          >
+          <ProgressiveImage>
             <h1>Uh oh!</h1>
           </ProgressiveImage>
         );

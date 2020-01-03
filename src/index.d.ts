@@ -9,7 +9,6 @@ declare module 'react-progressive-graceful-image' {
       sizes: string;
     };
     noRetry?: boolean,
-    retry?: Object;
     noLazyLoad?: boolean;
   }
 
@@ -19,9 +18,7 @@ declare module 'react-progressive-graceful-image' {
     srcSetData?: {
       srcSet: string;
       sizes: string;
-    };
-    retryDelay: number;
-    retryCount: number;  
+    }; 
   }
 
   export default class ProgressiveImage extends React.Component<
