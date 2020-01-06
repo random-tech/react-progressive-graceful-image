@@ -19,6 +19,7 @@ similar to https://github.com/linasmnew/react-graceful-image, but with a differe
 - [x] Use of navigator.onLine in place of current retry strategy (Optimization)
 - [x] Introduce `rootMargin` and `threshold` props for Intersection Observer options.
 
+**Note:** `npm i intersection-observer`, if polyfill is required, I have removed it to keep the library lightweight.
 ***
 
 [![Maintenance Status][maintenance-image]](#maintenance-status)
@@ -33,7 +34,7 @@ $ npm i react-progressive-graceful-image
 
 ### Examples
 
-#### Simple
+#### Simple - [CodeSandbox](https://codesandbox.io/s/react-progressive-graceful-image-simple-example-x8zhz)
 
 ```jsx
 <ProgressiveImage src="large-image.jpg" placeholder="tiny-image.jpg">
@@ -41,7 +42,7 @@ $ npm i react-progressive-graceful-image
 </ProgressiveImage>
 ```
 
-#### With Delay
+#### With Delay - [CodeSandbox]()
 
 ```jsx
 <ProgressiveImage
@@ -53,7 +54,7 @@ $ npm i react-progressive-graceful-image
 </ProgressiveImage>
 ```
 
-#### With loading argument
+#### With loading argument - [CodeSandbox](https://codesandbox.io/s/react-progressive-graceful-image-with-loading-argument-u6mj1)
 
 ```jsx
 <ProgressiveImage src="large-image.jpg" placeholder="tiny-image.jpg">
@@ -63,7 +64,7 @@ $ npm i react-progressive-graceful-image
 </ProgressiveImage>
 ```
 
-#### With srcSet
+#### With srcSet - [CodeSandbox]()
 
 ```jsx
 <ProgressiveImage
@@ -86,7 +87,7 @@ $ npm i react-progressive-graceful-image
 </ProgressiveImage>
 ```
 
-#### With Intersection Observer Options
+#### With Intersection Observer Options - [CodeSandbox]()
 
 ```jsx
 <ProgressiveImage
@@ -100,7 +101,7 @@ $ npm i react-progressive-graceful-image
 </ProgressiveImage>
 ```
 
-#### Component As Placeholder
+#### Component As Placeholder - [CodeSandbox](https://codesandbox.io/s/react-progressive-graceful-image-component-as-placeholder-wuz48)
 
 If you want to use a component, such as a loading spinner, as a placeholder, you can make use of the `loading` argument in the render callback. It will be true while the main image is loading and false once it has fully loaded. Keep in mind that the `placeholder` props is `required`, so you will need to explicitly declare an empty string as it's value if you plan on using a component in the render callback.
 
@@ -160,3 +161,9 @@ You can do this by adding the fallback image inside of a `<noscript>` tag in the
  **Stable:** Formidable is not planning to develop any new features for this project. We are still responding to bug reports and security concerns. We are still welcoming PRs for this project, but PRs that include new features should be small and easy to integrate and should not include breaking changes.
 
 [maintenance-image]: https://img.shields.io/badge/maintenance-stable-blue.svg
+
+## License
+
+Licensed under the MIT License, Copyright © 2019-present.
+
+See [LICENSE](./LICENSE) for more information.
