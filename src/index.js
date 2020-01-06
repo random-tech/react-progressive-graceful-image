@@ -1,7 +1,6 @@
 // @flow
 
 import * as React from 'react';
-import 'intersection-observer'; // optional polyfill
 import Observer from '@researchgate/react-intersection-observer';
 
 type SrcSetData = {
