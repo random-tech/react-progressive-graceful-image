@@ -144,18 +144,18 @@ You can do this by adding the fallback image inside of a `<noscript>` tag in the
 
 ### Props
 
-| Name        | Type                                   | Required | Description                                            |
-| ----------- | -------------------------------------- | -------- | ------------------------------------------------------ |
-| children    | `function`                             | `true`   | returns `src`, `ref`, `loading`, and `srcSetData`      |
-| delay       | `number`                               | `false`  | time in milliseconds before src image is loaded        |
-| onError     | `function`                             | `false`  | returns error event                                    |
-| placeholder | `string`                               | `true`   | the src of the placeholder image                       |
-| src         | `string`                               | `true`   | the src of the main image                              |
-| srcSetData  | `{srcSet: "string", sizes: "string" }` | `false`  | srcset and sizes to be applied to the image            |
-| noRetry     | `boolean`                              | `false`  | flag to turn off re-trying	                           |
-| noLazyLoad  | `boolean`                              | `false`  | flag to turn off lazy loading                          |
-| rootMargin  | `string`                               | `false`  | Intersection Observer Option (eg: "0% 0% 25%" -default)|
-| threshold   | `Array`                                | `false`  | Intersection Observer Option (eg: [0] -default)        |
+| Name        | Type                                   | Required | Description                                              |
+| ----------- | -------------------------------------- | -------- | ---------------------------------------------------------|
+| children    | `function`                             | `true`   | returns `src`, `ref`, `loading`, and `srcSetData`        |
+| delay       | `number`                               | `false`  | time in milliseconds before src image is loaded          |
+| onError     | `function`                             | `false`  | returns error event                                      |
+| placeholder | `string`                               | `true`   | the src of the placeholder image                         |
+| src         | `string`                               | `true`   | the src of the main image                                |
+| srcSetData  | `{srcSet: "string", sizes: "string" }` | `false`  | srcset and sizes to be applied to the image              |
+| noRetry     | `boolean`                              | `false`  | flag to turn off re-trying	                             |
+| noLazyLoad  | `boolean`                              | `false`  | flag to turn off lazy loading                            |
+| rootMargin  | `string`                               | `false`  | Intersection Observer Option (eg: `"0% 0% 25%"` -default)|
+| threshold   | `Array`                                | `false`  | Intersection Observer Option (eg: `[0]` -default)        |
 
 ## Maintenance Status
 
