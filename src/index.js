@@ -17,7 +17,9 @@ type Props = {
   src: string,
   srcSetData?: SrcSetData,
   noRetry?: boolean,
-  noLazyLoad?: boolean
+  noLazyLoad?: boolean,
+  rootMargin?: string,
+  threshold?: Array
 };
 
 type State = {
@@ -181,8 +183,8 @@ export default class ProgressiveImage extends React.Component<Props, State> {
     const options = {
       onChange: (event, unobserve) =>
         this.handleIntersection(event, unobserve, this.state.isOnline),
-      rootMargin: '0% 0% 25%',
-      threshold: [0],
+      rootMargin: this.props.rootMargin || '0% 0% 25%',
+      threshold: this.props.threshold || [0],
       disabled: this.props.noLazyLoad || false
     };
     const { image, loading, srcSetData } = this.state;

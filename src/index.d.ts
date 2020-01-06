@@ -8,8 +8,10 @@ declare module 'react-progressive-graceful-image' {
       srcSet: string;
       sizes: string;
     };
-    noRetry?: boolean,
+    noRetry?: boolean;
     noLazyLoad?: boolean;
+    rootMargin?: string;
+    threshold?: Array;
   }
 
   export interface ProgressiveImageState {

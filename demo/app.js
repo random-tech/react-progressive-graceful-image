@@ -61,6 +61,8 @@ class App extends React.Component {
               srcSet: `http://placehold.it/594x1024/${i + 1}d${i}${i + 4}${i +
                 3}a/ffffff/&text=BigImage${i + 1} 2000w`
             }}
+            rootMargin="0% 0% 0%"
+            threshold={[1]}
           >
             {(image, ref, loading, srcSetData) => {
               return (

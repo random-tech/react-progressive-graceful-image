@@ -17,7 +17,7 @@ similar to https://github.com/linasmnew/react-graceful-image, but with a differe
 #### [TODO] : 
 - [x] Use of Intersection Observer for Lazy Loading (Better Performance)
 - [x] Use of navigator.onLine in place of current retry strategy (Optimization)
-- [ ] Introduce `rootMargin` and `threshold` props for Intersection Observer options.
+- [x] Introduce `rootMargin` and `threshold` props for Intersection Observer options.
 
 ***
 
@@ -86,6 +86,20 @@ $ npm i react-progressive-graceful-image
 </ProgressiveImage>
 ```
 
+#### With Intersection Observer Options
+
+```jsx
+<ProgressiveImage
+  delay={3000}
+  src="large-image.jpg"
+  placeholder="tiny-image.jpg"
+  rootMargin="0% 0% 0%"
+  threshold={[1]}
+>
+  {(src, ref) => <img ref={ref} src={src} alt="an image" />}
+</ProgressiveImage>
+```
+
 #### Component As Placeholder
 
 If you want to use a component, such as a loading spinner, as a placeholder, you can make use of the `loading` argument in the render callback. It will be true while the main image is loading and false once it has fully loaded. Keep in mind that the `placeholder` props is `required`, so you will need to explicitly declare an empty string as it's value if you plan on using a component in the render callback.
@@ -138,7 +152,8 @@ You can do this by adding the fallback image inside of a `<noscript>` tag in the
 | srcSetData  | `{srcSet: "string", sizes: "string" }` | `false`  | srcset and sizes to be applied to the image            |
 | noRetry     | `boolean`                              | `false`  | flag to turn off re-trying	                           |
 | noLazyLoad  | `boolean`                              | `false`  | flag to turn off lazy loading                          |
-
+| rootMargin  | `string`                               | `false`  | Intersection Observer Option (eg: "0% 0% 25%" -default)|
+| threshold   | `Array`                                | `false`  | Intersection Observer Option (eg: [0] -default)        |
 
 ## Maintenance Status
 
