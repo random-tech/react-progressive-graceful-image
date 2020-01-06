@@ -18,6 +18,7 @@ similar to https://github.com/linasmnew/react-graceful-image, but with a differe
 - [x] Use of Intersection Observer for Lazy Loading (Better Performance)
 - [x] Use of navigator.onLine in place of current retry strategy (Optimization)
 - [x] Introduce `rootMargin` and `threshold` props for Intersection Observer options.
+- [ ] Add more Code Sandbox example links
 
 **Note:** `npm i intersection-observer`, if polyfill is required, I have removed it to keep the library lightweight.
 ***
@@ -42,7 +43,7 @@ $ npm i react-progressive-graceful-image
 </ProgressiveImage>
 ```
 
-#### With Delay - [CodeSandbox]()
+#### With Delay
 
 ```jsx
 <ProgressiveImage
@@ -64,7 +65,7 @@ $ npm i react-progressive-graceful-image
 </ProgressiveImage>
 ```
 
-#### With srcSet - [CodeSandbox]()
+#### With srcSet
 
 ```jsx
 <ProgressiveImage
@@ -87,7 +88,7 @@ $ npm i react-progressive-graceful-image
 </ProgressiveImage>
 ```
 
-#### With Intersection Observer Options - [CodeSandbox]()
+#### With Intersection Observer Options
 
 ```jsx
 <ProgressiveImage
