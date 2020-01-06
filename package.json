@@ -20,9 +20,12 @@
     "progressive",
     "graceful",
     "images",
-    "loading"
+    "loading",
+    "lazyloading",
+    "intersectionObserver"
   ],
   "repository": "https://github.com/sanishkr/react-progressive-graceful-image.git",
+  "homepage": "https://codesandbox.io/s/react-progressive-graceful-image-simple-example-h8jh4",
   "author": "Sanish <sanishkr@gmail.com>",
   "license": "MIT",
   "devDependencies": {
