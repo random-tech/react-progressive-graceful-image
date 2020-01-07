@@ -12,13 +12,13 @@ I am adding two new features:
  - Graceful loading 
  - Lazy loading
 
-similar to https://github.com/linasmnew/react-graceful-image, but with a different approach(for better performance and optimization). So, please check usage of 2 newly introduced props (noRetry, noLazyLoad) from the props table below.
+similar to https://github.com/linasmnew/react-graceful-image, but with a different approach(for better performance and optimization). So, please check usage of 4 newly introduced props (noRetry, noLazyLoad, rootMargin, threshold) from the props table below.
 
 #### [TODO] : 
 - [x] Use of Intersection Observer for Lazy Loading (Better Performance)
 - [x] Use of navigator.onLine in place of current retry strategy (Optimization)
 - [x] Introduce `rootMargin` and `threshold` props for Intersection Observer options.
-- [ ] Add more Code Sandbox example links
+- [x] Add more Code Sandbox example links
 
 **Note:** `npm i intersection-observer`, if polyfill is required, I have removed it to keep the library lightweight.
 ***
@@ -43,7 +43,7 @@ $ npm i react-progressive-graceful-image
 </ProgressiveImage>
 ```
 
-#### With Delay
+#### With Delay - [CodeSandbox](https://codesandbox.io/s/react-progressive-graceful-image-with-delay-y0vfp)
 
 ```jsx
 <ProgressiveImage
@@ -65,7 +65,7 @@ $ npm i react-progressive-graceful-image
 </ProgressiveImage>
 ```
 
-#### With srcSet
+#### With srcSet - [CodeSandbox](https://codesandbox.io/s/react-progressive-graceful-image-with-srcset-o1dod)
 
 ```jsx
 <ProgressiveImage
@@ -76,7 +76,7 @@ $ npm i react-progressive-graceful-image
   }}
   placeholder="tiny-image.jpg"
 >
-  {(src, ref, _loading, srcSetData) => (
+  {(src, ref, loading, srcSetData) => (
     <img
       src={src}
       ref={ref}
@@ -88,7 +88,7 @@ $ npm i react-progressive-graceful-image
 </ProgressiveImage>
 ```
 
-#### With Intersection Observer Options
+#### With Intersection Observer Options - [CodeSandbox](https://codesandbox.io/s/react-progressive-graceful-image-with-intersection-observer-options-sjl25)
 
 ```jsx
 <ProgressiveImage
@@ -152,10 +152,12 @@ You can do this by adding the fallback image inside of a `<noscript>` tag in the
 | placeholder | `string`                               | `true`   | the src of the placeholder image                         |
 | src         | `string`                               | `true`   | the src of the main image                                |
 | srcSetData  | `{srcSet: "string", sizes: "string" }` | `false`  | srcset and sizes to be applied to the image              |
-| noRetry     | `boolean`                              | `false`  | flag to turn off re-trying	                             |
-| noLazyLoad  | `boolean`                              | `false`  | flag to turn off lazy loading                            |
+| noRetry     | `boolean`                              | `false`  | flag to turn off re-trying (default: `false`)	           |
+| noLazyLoad  | `boolean`                              | `false`  | flag to turn off lazy loading (default: `false`)         |
 | rootMargin  | `string`                               | `false`  | Intersection Observer Option (eg: `"0% 0% 25%"` -default)|
 | threshold   | `Array`                                | `false`  | Intersection Observer Option (eg: `[0]` -default)        |
+
+**Note:** I published this [interesting article on medium](https://medium.com/@sanishkr/react-progressive-graceful-image-c7a45b577f5f) to explain the idea and motivation behind building this npm package. And a small [code snippet](https://gist.github.com/sanishkr/7f520f227989133a779eb49726bc77cb) to make best use of it.
 
 ## Maintenance Status
 
