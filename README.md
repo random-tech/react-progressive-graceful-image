@@ -1,7 +1,7 @@
 # React Progressive Graceful Image
 
 **Breaking changes:** 
-- [0.6.5] : Now, `ref` is removed as it is not required anymore for the lazyLoading feature.
+- [0.6.11] : Now, `ref` is removed as it is not required anymore for the lazyLoading feature.
 - [0.6.8] : Now, `retry` prop is removed to improve performance and user accessibility as new retry strategy based is on `window.navigator.onLine`.
 - [0.6.5] : Now, `ref` will be a required 2nd argument of children function to use the lazyLoading feature. Checkout below examples for details.
 
