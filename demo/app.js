@@ -64,14 +64,13 @@ class App extends React.Component {
             rootMargin="0% 0% 0%"
             threshold={[1]}
           >
-            {(image, ref, loading, srcSetData) => {
+            {(image, loading, srcSetData) => {
               return (
                 <img
                   style={imageStyle}
                   src={image}
                   srcSet={srcSetData.srcSet}
                   // sizes={srcSetData.sizes}
-                  ref={ref}
                   alt={`Image #${i + 1}`}
                 />
               );
