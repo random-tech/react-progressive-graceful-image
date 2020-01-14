@@ -1,7 +1,8 @@
 # React Progressive Graceful Image
 
 **Breaking changes:** 
-- [0.6.8] : Now, `retry` prop is removed to improve performance and user accessibility as new retry strategy based is on `window.navigator.onLine`. Checkout below examples for details.
+- [0.6.5] : Now, `ref` is removed as it is not required anymore for the lazyLoading feature.
+- [0.6.8] : Now, `retry` prop is removed to improve performance and user accessibility as new retry strategy based is on `window.navigator.onLine`.
 - [0.6.5] : Now, `ref` will be a required 2nd argument of children function to use the lazyLoading feature. Checkout below examples for details.
 
 ***
@@ -19,6 +20,8 @@ similar to https://github.com/linasmnew/react-graceful-image, but with a differe
 - [x] Use of navigator.onLine in place of current retry strategy (Optimization)
 - [x] Introduce `rootMargin` and `threshold` props for Intersection Observer options.
 - [x] Add more Code Sandbox example links
+- [x] Remove `ref` from child function.
+- [ ] Remove dependency of `@researchgate/react-intersection-observer`
 
 **Note:** `npm i intersection-observer`, if polyfill is required, I have removed it to keep the library lightweight.
 ***
@@ -39,7 +42,7 @@ $ npm i react-progressive-graceful-image
 
 ```jsx
 <ProgressiveImage src="large-image.jpg" placeholder="tiny-image.jpg">
-  {(src, ref) => <img ref={ref} src={src} alt="an image" />}
+  {(src) => <img src={src} alt="an image" />}
 </ProgressiveImage>
 ```
 
@@ -51,7 +54,7 @@ $ npm i react-progressive-graceful-image
   src="large-image.jpg"
   placeholder="tiny-image.jpg"
 >
-  {(src, ref) => <img ref={ref} src={src} alt="an image" />}
+  {(src) => <img src={src} alt="an image" />}
 </ProgressiveImage>
 ```
 
@@ -59,8 +62,8 @@ $ npm i react-progressive-graceful-image
 
 ```jsx
 <ProgressiveImage src="large-image.jpg" placeholder="tiny-image.jpg">
-  {(src, ref, loading) => (
-    <img ref={ref} style={{ opacity: loading ? 0.5 : 1 }} src={src} alt="an image" />
+  {(src, loading) => (
+    <img style={{ opacity: loading ? 0.5 : 1 }} src={src} alt="an image" />
   )}
 </ProgressiveImage>
 ```
@@ -76,10 +79,9 @@ $ npm i react-progressive-graceful-image
   }}
   placeholder="tiny-image.jpg"
 >
-  {(src, ref, loading, srcSetData) => (
+  {(src, loading, srcSetData) => (
     <img
       src={src}
-      ref={ref}
       srcSet={srcSetData.srcSet}
       sizes={srcSetData.sizes}
       alt="an image"
@@ -98,7 +100,7 @@ $ npm i react-progressive-graceful-image
   rootMargin="0% 0% 0%"
   threshold={[1]}
 >
-  {(src, ref) => <img ref={ref} src={src} alt="an image" />}
+  {(src) => <img src={src} alt="an image" />}
 </ProgressiveImage>
 ```
 
@@ -115,8 +117,8 @@ const placeholder = (
 );
 
 <ProgressiveImage src="large-image.jpg" placeholder="" >
-  {(src, ref, loading) => {
-    return loading ? placeholder : <img ref={ref} src={src} alt="an image" />;
+  {(src, loading) => {
+    return loading ? placeholder : <img src={src} alt="an image" />;
   }}
 </ProgressiveImage>;
 ```
@@ -129,10 +131,10 @@ You can do this by adding the fallback image inside of a `<noscript>` tag in the
 
 ```jsx
 <ProgressiveImage src="large-image.jpg" placeholder="tiny-image.jpg" >
-  {(src, ref) => {
+  {(src) => {
     return (
       <div>
-        <img ref={ref} className="progressive-image" src={src} />
+        <img className="progressive-image" src={src} />
         <noscript>
           <img className="progressive-image no-script" src="large-image.jpg" />
         </noscript>
@@ -146,7 +148,7 @@ You can do this by adding the fallback image inside of a `<noscript>` tag in the
 
 | Name        | Type                                   | Required | Description                                              |
 | ----------- | -------------------------------------- | -------- | ---------------------------------------------------------|
-| children    | `function`                             | `true`   | returns `src`, `ref`, `loading`, and `srcSetData`        |
+| children    | `function`                             | `true`   | returns `src`, `loading`, and `srcSetData`        |
 | delay       | `number`                               | `false`  | time in milliseconds before src image is loaded          |
 | onError     | `function`                             | `false`  | returns error event                                      |
 | placeholder | `string`                               | `true`   | the src of the placeholder image                         |
