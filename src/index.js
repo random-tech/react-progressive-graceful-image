@@ -57,22 +57,6 @@ export default class ProgressiveImage extends React.Component<Props, State> {
     }
     window.addEventListener('online', this.handleOnlineStatus);
     window.addEventListener('offline', this.handleOnlineStatus);
-    // const { src, srcSetData } = this.props;
-    // if user wants to lazy load
-    // if (!this.props.noLazyLoad) {
-    //   check if already within viewport to avoid attaching listeners
-    //   if (isInViewport(this.placeholderImage.current)) {
-    //     this.loadImage(src, srcSetData);
-    //   } else {
-    //     registerListener('load', this.throttledFunction);
-    //     registerListener('scroll', this.throttledFunction);
-    //     registerListener('resize', this.throttledFunction);
-    //     registerListener('gestureend', this.throttledFunction); // to detect pinch on mobile devices
-    //     registerListener('touchend', this.throttledFunction); // to detect end of swipe/touch on devices
-    //   }
-    // } else {
-    //   this.loadImage(src, srcSetData);
-    // }
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -188,8 +172,6 @@ export default class ProgressiveImage extends React.Component<Props, State> {
     };
     const { image, loading, srcSetData } = this.state;
     const { children, noRetry, noLazyLoad } = this.props;
-    const ref = React.createRef();
-    this.placeholderImage = ref;
     // console.log({ noRetry, noLazyLoad });
     if (noLazyLoad === undefined) {
       // noLazyLoad = false;
@@ -199,9 +181,7 @@ export default class ProgressiveImage extends React.Component<Props, State> {
     }
 
     return (
-      <Observer {...options}>
-        {children(image, ref, loading, srcSetData)}
-      </Observer>
+      <Observer {...options}>{children(image, loading, srcSetData)}</Observer>
     );
   }
 }
