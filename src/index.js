@@ -171,14 +171,14 @@ export default class ProgressiveImage extends React.Component<Props, State> {
       disabled: this.props.noLazyLoad || false
     };
     const { image, loading, srcSetData } = this.state;
-    const { children, noRetry, noLazyLoad } = this.props;
+    const { src, children, noRetry, noLazyLoad } = this.props;
 
     if (!children || typeof children !== 'function') {
       throw new Error(`ProgressiveImage requires a function as its only child`);
     }
 
     if (noLazyLoad) {
-      return children(this.props.src, false, this.props.srcSetData);
+      return children(src, false, this.props.srcSetData);
     }
 
     return (
