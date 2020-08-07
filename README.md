@@ -1,5 +1,8 @@
 # React Progressive Graceful Image
 
+**Update**
+- [0.6.12] : `noLazyLoad` set to `true` works as expected.
+
 **Breaking changes:** 
 - [0.6.11] : Now, `ref` is removed as it is not required anymore for the lazyLoading feature.
 - [0.6.8] : Now, `retry` prop is removed to improve performance and user accessibility as new retry strategy based is on `window.navigator.onLine`.
