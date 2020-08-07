@@ -1,6 +1,6 @@
 {
   "name": "react-progressive-graceful-image",
-  "version": "0.6.11",
+  "version": "0.6.12",
   "description": "Graceful Progressive image loading for React",
   "main": "dist.js",
   "typings": "src/index.d.ts",
