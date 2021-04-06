@@ -96,7 +96,7 @@ export default class ProgressiveImage extends React.Component<Props, State> {
     this.image = image;
     image.onload = this.onLoad;
     image.onerror = () => {
-      this.onError;
+      this.onError();
       return;
       // this.handleImageRetries(image);
     };
